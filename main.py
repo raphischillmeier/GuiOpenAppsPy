@@ -4,7 +4,16 @@ import os
 
 apps = []
 
+if os.path.isfile("save.txt"):
+    with open("save.txt", "r") as f:
+        tempApps = f.read()
+        tempApps = tempApps.split(",")
+        apps = [x for x in tempApps if x.strip()]
+
 def addApp():
+    for widget in frame.winfo_children():
+        widget.destroy()
+
     filename = filedialog.askopenfilename(initialdir="/", title="Select File",
                                           filetypes=(("executables", "*.exe"), ("all files", "*.*")))
     apps.append(filename)
@@ -34,6 +43,10 @@ addApps.pack(side=tk.BOTTOM)
 
 runApps = tk.Button(root, padx=3, pady=7, fg="black", bg="white", text="Run Apps", command=runApp)
 runApps.pack(side=tk.BOTTOM)
+
+for app in apps:
+    label = tk.Label(frame, text=app)
+    label.pack()
 
 root.mainloop()
 
